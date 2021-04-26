@@ -12,10 +12,10 @@ data class Person(
 
 data class Music(
     val instruments: MutableList<Any> = mutableListOf(),
-    //@ChangeProperty("MusicalGender")
+    @ChangeProperty("MusicalGender")
     val gender: Gender,
     val band: String,
-    //@RemoveProperty
+    @RemoveProperty
     val play: Boolean
 
 )
