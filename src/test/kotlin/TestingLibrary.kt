@@ -4,11 +4,11 @@ import kotlin.test.assertEquals
 class TestingLibrary {
 
     fun create(): Generator {
-        val literatura = Literature("Lá, onde o vento chora", "Romance", "Fernando Pessoa")
+        val literatura = Literature("Desassossego", "Romance", "Fernando Pessoa")
         val instruments = mutableListOf<Any>()
         instruments.add("Piano")
         instruments.add("Orgao")
-        val musica = Music(instruments, Gender.folk, "The Paper Kites", true)
+        val musica = Music(instruments, Gender.indie, "The Paper Kites", true)
         val persona = Person("Micaela", 22, "Auditor", "Systems Engineering", literatura, musica)
         return Generator(persona)
     }
@@ -18,15 +18,14 @@ class TestingLibrary {
 "degree": "Systems Engineering", 
 "job": "Auditor", 
 "literatura": {
-"book": "Lá, onde o vento chora", 
+"book": "Desassossego", 
 "gender": "Romance", 
 "writer": "Fernando Pessoa"
 },
 "musica": {
 "band": "The Paper Kites", 
-"gender": "folk", 
-"instruments": ["Piano", "Orgao"],
-"play":  true
+"MusicalGender": "indie", 
+"instruments": ["Piano", "Orgao"]
 },
 "name": "Micaela"
 }"""
