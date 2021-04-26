@@ -39,7 +39,7 @@ class TestingLibrary {
     }
 
     val trueSearch =
-        "[Systems Engineering, Auditor, Lá, onde o vento chora, Romance, Fernando Pessoa, The Paper Kites, folk, Piano, Orgao, Micaela]"
+        "[Systems Engineering, Auditor, Desassossego, Romance, Fernando Pessoa, The Paper Kites, indie, Piano, Orgao, Micaela]"
 
     @Test
     fun testSearch() { // vai comparar a string criada com a true searh
