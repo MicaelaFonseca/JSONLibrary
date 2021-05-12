@@ -31,7 +31,7 @@ class TestingLibrary {
 }"""
 
     @Test
-    fun testSerialization() { // vai comparar o json criado com o true json
+    fun testSerialization() {
         val a = create()
         assertEquals(trueJson, a.jSON(), "Não são iguais")
 
@@ -41,7 +41,7 @@ class TestingLibrary {
         "[Systems Engineering, Auditor, Desassossego, Romance, Fernando Pessoa, The Paper Kites, indie, Piano, Orgao, Micaela]"
 
     @Test
-    fun testSearch() { // vai comparar a string criada com a true searh
+    fun testSearch() {
         val a = create()
         assertEquals(trueSearch, a.searchStrings().toString(), "Não são iguais")
 

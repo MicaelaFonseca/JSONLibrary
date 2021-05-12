@@ -21,18 +21,18 @@ class Generator(private val o: Any?) { //pode ser ou nao null
 
     fun searchStrings(): List<String> { // procura string.
         val visitor = SearchString()
-        if (o is List<Any?>) { // se o parametro passado for lista, array.
+        if (o is List<Any?>) {
             val array = JSONArray(o, null)
             array.rArray()
             array.accept(visitor)
         } else if (o == null) {
             null
-        } else { // se o parametro passado for objeto, JSONObject
+        } else {
             val objeto = JSONObject(o, null)
             objeto.rObj()
             objeto.accept(visitor)
         }
-        return visitor.lista // retorna a lista
+        return visitor.lista
     }
 
     fun searchKey(key: String): List<Any?> {

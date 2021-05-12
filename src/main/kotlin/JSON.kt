@@ -3,22 +3,22 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.hasAnnotation
 
-class JSONArray(val lista: List<Any?>, val parent: Element?) : Element(lista) { // (Leaf) //O valor pode ser null
+class JSONArray(val lista: List<Any?>, val parent: Element?) : Element(lista) {
     // percorre os filhos e guarda-os em memória
     var children = mutableListOf<Element>()
     var myName: String? = null
-    fun rArray() {
+    fun rArray() { //readArray
 
         lista.forEach() {
             if (it is List<Any?>) {
-                val jArray = JSONArray(it, this) //cria array
-                jArray.rArray() //cria filhos do array
+                val jArray = JSONArray(it, this)
+                jArray.rArray()
                 children.add(jArray)
             } else if (it is String || it is Int || it is Boolean || it is Double || it == null || it is Enum<*>) {
-                children.add(JSONVariable(it, this)) //
+                children.add(JSONVariable(it, this))
             } else {
-                val jObject = JSONObject(it, this) //cria array
-                jObject.rObj() //cria filhos do array
+                val jObject = JSONObject(it, this)
+                jObject.rObj()
                 children.add(JSONObject(it, this))
             }
         }
@@ -26,7 +26,7 @@ class JSONArray(val lista: List<Any?>, val parent: Element?) : Element(lista) { 
 
     fun getName(): String? { // vai buscar nome da variavel
         if (parent is JSONObject) {
-            parent.children.forEach() {
+            parent.children.forEach() /* percorre cada filho do pai*/ {
                 if (it.value === this)
                     myName = it.key
             }
@@ -37,17 +37,17 @@ class JSONArray(val lista: List<Any?>, val parent: Element?) : Element(lista) { 
     override fun accept(v: Visitor) {
         v.visitorJSONArray(this)
         children.forEach() {
-            it.accept(v)
+            it.accept(v) // passa pela estrutura e imprime todos os elementos
         }
         v.finalVisitorJSONArray(this)
     }
 }
 
-class JSONObject(val o: Any, val parent: Element?) : Element(o) { // (composite)  Pode ser array
-    //Definir variaveis do objeto recebido como parametros; Coloca-se essa informacao na lista
+// object que contem outros objetos - composite
+class JSONObject(val o: Any, val parent: Element?) : Element(o) {
 
     var myName: String? = null
-    var children = mutableMapOf<String, Element>() // lista dos elementos do objeto
+    var children = mutableMapOf<String, Element>() // map dos elementos do objeto
 
     fun rObj() {
 
@@ -66,16 +66,16 @@ class JSONObject(val o: Any, val parent: Element?) : Element(o) { // (composite)
                 }
                 var valor = it.call(o) //chama o valor da propriedade
 
-                if (valor is List<*>) { // se o valor for do tipo lista - JSONArray
-                    val jArray = JSONArray(valor, this) //cria array
-                    jArray.rArray() //cria filhos do array
+                if (valor is List<*>) {
+                    val jArray = JSONArray(valor, this)
+                    jArray.rArray()
                     children[nome] = jArray
-                } else if (valor is String || valor is Int || valor is Boolean || valor is Double || valor == null || valor is Enum<*>) { //se for tipo primitivo
+                } else if (valor is String || valor is Int || valor is Boolean || valor is Double || valor == null || valor is Enum<*>) {
                     val variable = JSONVariable(valor, this)
                     children[nome] = variable
                 } else {
-                    val jObject = JSONObject(valor, this) //cria array
-                    jObject.rObj() //cria filhos do array
+                    val jObject = JSONObject(valor, this)
+                    jObject.rObj()
                     children[nome] = jObject
                 }
             }
@@ -101,10 +101,10 @@ class JSONObject(val o: Any, val parent: Element?) : Element(o) { // (composite)
     }
 }
 
-class JSONVariable(val o: Any?, val parent: Element) : Element(o) { // Parent nao pode ser null
+class JSONVariable(val o: Any?, val parent: Element) : Element(o) {
     var myName: String? = null
 
-    fun getName(): String? { // vai buscar nome da variavel
+    fun getName(): String? {
         if (parent is JSONObject) {
             parent.children.forEach() {
                 if (it.value === this)

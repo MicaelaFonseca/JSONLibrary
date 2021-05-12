@@ -4,9 +4,9 @@ import kotlin.reflect.full.hasAnnotation
 interface Visitor { //interface com funções que devem ser implementadas
 
     fun visitorJSONArray(node: JSONArray) {}
-    fun finalVisitorJSONArray(node: JSONArray) {} // serve para fechar o array
+    fun finalVisitorJSONArray(node: JSONArray) {}
     fun visitorJSONObject(node: JSONObject) {}
-    fun finalVisitorJSONObject(node: JSONObject) {} // serve para fechar o objeto
+    fun finalVisitorJSONObject(node: JSONObject) {}
     fun visitorJSONVariable(node: JSONVariable) {}
 }
 
