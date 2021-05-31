@@ -1,3 +1,4 @@
+import projeto12.Generator
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -57,4 +58,14 @@ class TestingLibrary {
 
     }
 
+    fun testGUI() {
+        val a = create()
+        a.jSONGUI()
+
+    }
+
+}
+
+fun main () {
+    TestingLibrary().testGUI()
 }

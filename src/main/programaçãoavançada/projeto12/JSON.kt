@@ -1,3 +1,4 @@
+import projeto12.Element
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
@@ -24,7 +25,7 @@ class JSONArray(val lista: List<Any?>, val parent: Element?) : Element(lista) {
         }
     }
 
-    fun getName(): String? { // vai buscar nome da variavel
+    fun getKey(): String? { // vai buscar a key da variavel
         if (parent is JSONObject) {
             parent.children.forEach() /* percorre cada filho do pai*/ {
                 if (it.value === this)
@@ -82,7 +83,7 @@ class JSONObject(val o: Any, val parent: Element?) : Element(o) {
         }
     }
 
-    fun getName(): String? { // vai buscar nome da variavel
+    fun getKey(): String? { // vai buscar a key da variavel
         if (parent is JSONObject) {
             parent.children.forEach() {
                 if (it.value === this)
@@ -104,7 +105,7 @@ class JSONObject(val o: Any, val parent: Element?) : Element(o) {
 class JSONVariable(val o: Any?, val parent: Element) : Element(o) {
     var myName: String? = null
 
-    fun getName(): String? {
+    fun getKey(): String? {
         if (parent is JSONObject) {
             parent.children.forEach() {
                 if (it.value === this)

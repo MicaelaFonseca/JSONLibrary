@@ -1,6 +1,3 @@
-import kotlin.reflect.KClass
-import kotlin.reflect.full.hasAnnotation
-
 interface Visitor { //interface com funções que devem ser implementadas
 
     fun visitorJSONArray(node: JSONArray) {}
@@ -8,14 +5,15 @@ interface Visitor { //interface com funções que devem ser implementadas
     fun visitorJSONObject(node: JSONObject) {}
     fun finalVisitorJSONObject(node: JSONObject) {}
     fun visitorJSONVariable(node: JSONVariable) {}
+
 }
 
-class JSON : Visitor {
+ class JSON : Visitor {
 
     var texto = ""
 
     override fun visitorJSONArray(jArray: JSONArray) {
-        val nome = jArray.getName() // vai buscar o nome do parametro
+        val nome = jArray.getKey() // vai buscar o nome do parametro
 
         texto += if (nome != null) "\"" + nome + "\": " + "[" else "[" // o nome pode vir null no caso de se tratar de uma variavel primitiva
     }
@@ -31,7 +29,7 @@ class JSON : Visitor {
 
     override fun visitorJSONObject(jObj: JSONObject) {
 
-        val nome = jObj.getName()
+        val nome = jObj.getKey()
 
         texto += if (nome != null) "\"" + nome + "\": " + "{" + "\n" else "{" + "\n" // o nome pode vir null no caso de se tratar de uma variavel primitiva
     }
@@ -58,7 +56,7 @@ class JSON : Visitor {
 
     override fun visitorJSONVariable(jVariable: JSONVariable) {
 
-        val nome = jVariable.getName()
+        val nome = jVariable.getKey()
 
         if (nome != null) {
             texto += "\"" + nome + "\": "
@@ -79,7 +77,7 @@ class JSON : Visitor {
 
 }
 
-class SearchString : Visitor { // class para o teste da pesquisa (string)
+ class SearchString : Visitor { // class para o teste da pesquisa (string)
 
     val lista = mutableListOf<String>()
 
@@ -93,20 +91,20 @@ class SearchString : Visitor { // class para o teste da pesquisa (string)
 
 }
 
-class SearchForKey(val key: String) : Visitor { // class para o teste da pesquisa ( valor )
+ class SearchForKey(val key: String) : Visitor { // class para o teste da pesquisa ( valor )
 
     val lista = mutableListOf<Any?>()
 
     override fun visitorJSONArray(node: JSONArray) {
-        if (node.getName() == key) lista.add(node.lista)
+        if (node.getKey() == key) lista.add(node.lista)
     }
 
     override fun visitorJSONObject(node: JSONObject) {
-        if (node.getName() == key) lista.add(node.o)
+        if (node.getKey() == key) lista.add(node.o)
     }
 
     override fun visitorJSONVariable(node: JSONVariable) {
-        if (node.getName() == key) lista.add(node.o)
+        if (node.getKey() == key) lista.add(node.o)
     }
 
 }
