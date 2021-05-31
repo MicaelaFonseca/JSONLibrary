@@ -1,5 +1,4 @@
-import kotlin.reflect.KClass
-import kotlin.reflect.full.declaredMemberProperties
+import projeto12.Generator
 
 data class Person(
     val name: String,
