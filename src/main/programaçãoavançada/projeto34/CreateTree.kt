@@ -16,9 +16,13 @@ class CreateTree : Visitor {
     var currentParent: TreeItem? = null
 
     fun open(el: Element) {
-        var window = FileTreeSkeleton()
+        var window = Injector.create(FileTreeSkeleton::class)
+
         tree = window.tree //raiz da arvore
         el.accept(this)
+        window.insertIcon()
+        window.addText()
+        window.excludeNode()
         window.open()
     }
 
