@@ -19,7 +19,7 @@ class CreateTree : Visitor {
         var window = Injector.create(FileTreeSkeleton::class)
 
         tree = window.tree //raiz da arvore
-        el.accept(this)
+        el.accept(this) // inicia o visitor
         window.insertIcon()
         window.addText()
         window.excludeNode()
@@ -28,16 +28,16 @@ class CreateTree : Visitor {
 
     override fun visitorJSONArray(jArray: JSONArray) {
 
-        if (jArray.parent == null) {
+        if (jArray.parent == null) { // se parent null
             val node = TreeItem(tree, SWT.NONE)
-            node.text = "Array"
+            node.text = "Array" // chave denomina-se array
             node.data = jArray
-            currentParent = node
+            currentParent = node // o parent é o próprio jarray
         } else {
-            val node = TreeItem(currentParent, SWT.NONE)
-            node.text = jArray.getKey()
+            val node = TreeItem(currentParent, SWT.NONE) //assume o nó como pai
+            node.text = jArray.getKey() // chave
             node.data = jArray
-            currentParent = node
+            currentParent = node // o parent é o próprio jarray
         }
 
     }

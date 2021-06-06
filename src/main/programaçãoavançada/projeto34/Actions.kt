@@ -10,13 +10,13 @@ import JSONVariable
 import removeKey
 import java.io.File
 
-class Edit : Action {
+class Edit : Action { // Editar as propriedades de um objeto JSON
 
     override val name: String
         get() = "Editar" //texto do botão
 
     override val textBox: Boolean
-        get() = true
+        get() = true // tem ou não text bob
 
     override var input: String = ""
 
@@ -24,14 +24,14 @@ class Edit : Action {
 
         if (window.selectedItem != null) {
             if(name != "") {
-                window.selectedItem!!.text = input //data
+                window.selectedItem!!.text = "" //data
             }
         }
 
     }
 }
 
-class WriteJSON : Action {
+class WriteJSON : Action { //Escrever o JSON visível na área da direita para um ficheiro
 
     override val name: String
         get() = "JSON" //texto do botão
@@ -51,7 +51,7 @@ class WriteJSON : Action {
             if (data is JSONObject) {
                 val data = data
                 data.accept(serializationVisit)
-                textoJSON = removeKey(serializationVisit.texto, data.getKey())
+                textoJSON = removeKey(serializationVisit.texto, data.getKey()) // elimina excessos de string
 
             } else if (data is JSONArray) {
                 val data = data

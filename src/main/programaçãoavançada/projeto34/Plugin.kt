@@ -3,6 +3,7 @@ package projeto34
 import FrameSetup
 import JSONArray
 import JSONObject
+import JSONVariable
 import org.eclipse.swt.graphics.Image
 import org.eclipse.swt.layout.GridLayout
 import org.eclipse.swt.widgets.Display
@@ -27,27 +28,28 @@ class Setup : FrameSetup { //Apresentação
         val iconePasta = Image(display, folderIcon)
         val iconeFicheiro = Image(display, fileIcon)
 
+        if(node.data is JSONObject || node.data is JSONArray) { //primeiro objeto
+            node.image = iconePasta
+        }
+
         node.items.forEach {
-            if (it.data is JSONObject || it.data is JSONArray)
+            if (it.data is JSONObject || it.data is JSONArray) // se for array ou object faz volta a chamar a função
             {
-                it.image = iconePasta
                 setIcons(it, display)
             }
-            else {
+            else if (it.data is JSONVariable) { // se for variável coloca ficheiro
                 it.image = iconeFicheiro
-                setIcons(it, display)
             }
-            setIcons(it, display)
         }
     }
 
-    override fun addText(node: TreeItem, display: Display) {
+    override fun addText(node: TreeItem, display: Display) { // altera o nome
         node.items.forEach {
-            if (it.data is JSONArray) { //altera o nome das listas
+            if (it.data is JSONArray) { // se for array altera o nome para array
                 it.text = "Array"
                 addText(it, display)
             }
-            else if (it.data is JSONObject) {
+            else if (it.data is JSONObject) { // se for object altera o nome para object
                 it.text = "Object"
                 addText(it, display)
             }
@@ -57,13 +59,13 @@ class Setup : FrameSetup { //Apresentação
 
     override fun excludeNode(node: TreeItem) {
         node.items.forEach {
-            if (it.data is JSONArray) {
+            if (it.data is JSONArray) { // se for array elimina os filhos
                 it.items.forEach { child->
                     child.dispose()
                     excludeNode(it)
                 }
                 }
-            else if (it.data is JSONObject) {
+            else if (it.data is JSONObject) { // recursividade
                 excludeNode(it)
             }
 

@@ -21,11 +21,11 @@ class Injector {
         val map: MutableMap<String, List<KClass<*>>> = mutableMapOf()
 
         init {
-            val scanner = Scanner(File("src/di.properties"))
-            while(scanner.hasNextLine()) {
+            val scanner = Scanner(File("src/di.properties")) // lê os ficheiros da propriedade
+            while(scanner.hasNextLine()) { // enquanto houver linhas para ler
                 val line = scanner.nextLine()
                 val parts = line.split("=")
-                map[parts[0]] = parts[1].split(",")
+                map[parts[0]] = parts[1].split(",") //
                     .map { Class.forName(it).kotlin }
             }
             scanner.close()
@@ -36,13 +36,13 @@ class Injector {
             type.declaredMemberProperties.forEach {
                 if(it.hasAnnotation<Inject>()) {
                     it.isAccessible = true
-                    val key = type.simpleName + "." + it.name
+                    val key = type.simpleName + "." + it.name //FileTreeSkeleton.setup
                     val obj = map[key]!!.first().createInstance()
                     (it as KMutableProperty<*>).setter.call(o, obj)
                 }
                 else if(it.hasAnnotation<InjectAdd>()) {
                     it.isAccessible = true
-                    val key = type.simpleName + "." + it.name
+                    val key = type.simpleName + "." + it.name //FileTreeSkeleton.actions
 
                     val actions = mutableListOf<Action>()
                     map[key]?.forEach { action ->

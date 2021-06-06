@@ -34,7 +34,7 @@ interface Action {
 }
 
 class FileTreeSkeleton() {
-    val shell: Shell
+    val shell: Shell //janela
     val tree: Tree
     var selectedItem: TreeItem? = null
     @Inject
@@ -58,7 +58,7 @@ class FileTreeSkeleton() {
                 if (it.text.contains(pesquisa)) {
                     it.background = Color(Display.getCurrent(), 212, 198, 176)
                 }
-                if (it.data is JSONObject || it.data is JSONArray) {
+                if (it.data is JSONObject || it.data is JSONArray) { //recursiva
                     searchText(it, pesquisa)
 
                 }
@@ -92,12 +92,12 @@ class FileTreeSkeleton() {
             override fun widgetSelected(e: SelectionEvent) {
                 selectedItem = tree.selection.first()
                 var textoJSON = ""
-                val serializationVisit = JSON()
+                val serializationVisit = JSON() // corresponde ao visitor da serialização
                 if (tree.selection.first().data is JSONObject) {
                     val data = tree.selection.first().data as JSONObject
                     data.accept(serializationVisit)
-                    textoJSON = removeKey(serializationVisit.texto, data.getKey())
-                    labelJSON.text = textoJSON
+                    textoJSON = removeKey(serializationVisit.texto, data.getKey()) // remove os excessos da string (,)
+                    labelJSON.text = textoJSON // apresenta o json serializado
                 } else if (tree.selection.first().data is JSONArray) {
                     val data = tree.selection.first().data as JSONArray
                     data.accept(serializationVisit)
@@ -116,15 +116,6 @@ class FileTreeSkeleton() {
             }
         })
 
-
-//        val button = Button(shell, SWT.PUSH)
-//        button.text = "depth"
-//        button.addSelectionListener(object: SelectionAdapter() {
-//            override fun widgetSelected(e: SelectionEvent) {
-//                val item = tree.selection.first()
-//                label.text = item.depth().toString()
-//            }
-//        })
     }
 
     // auxiliar para profundidade do nó
@@ -132,7 +123,7 @@ class FileTreeSkeleton() {
         if (parentItem == null) 0
         else 1 + parentItem.depth()
 
-    private fun setActions() {
+    private fun setActions() { // função para todas as ações
 
         actions.forEach { action ->
 
@@ -141,15 +132,15 @@ class FileTreeSkeleton() {
                 inputTextBox = Text(shell, SWT.BORDER) // cria text box
             }
 
-            if(action.name != ""){ // se tiver button
+            if(action.name != ""){ // se tiver button (name)
 
                 val button = Button(shell, SWT.PUSH)
                 button.text = action.name
 
-                button.addSelectionListener(object : SelectionAdapter() {
+                button.addSelectionListener(object : SelectionAdapter() { //quando se carrega no botão
                     override fun widgetSelected(e: SelectionEvent?) {
                         super.widgetSelected(e)
-                        if (inputTextBox != null) {
+                        if (inputTextBox != null) { // se houver textbox
                             action.input = inputTextBox.text
                         }
                         action.execute(this@FileTreeSkeleton)
@@ -178,8 +169,10 @@ class FileTreeSkeleton() {
     fun Tree.expandAll() = traverse { it.expanded = true }
 
     fun Tree.traverse(visitor: (TreeItem) -> Unit) {
+
         fun TreeItem.traverse() {
             visitor(this)
+           // println(visitor)
             items.forEach {
                 it.traverse()
             }
@@ -187,18 +180,16 @@ class FileTreeSkeleton() {
         items.forEach { it.traverse() }
     }
 
-    fun insertIcon() {
-        tree.items.forEach {
-            setup.setIcons(it, Display.getDefault())
-        }
+    fun insertIcon() { // Plugins - Atribuir icones aos nós
+            setup.setIcons(tree.topItem, Display.getDefault())
     }
-    fun addText() {
+    fun addText() { // Plugins - Fornecer o texto dos nós
         tree.items.forEach {
             setup.addText(it, Display.getDefault())
         }
     }
 
-    fun excludeNode() {
+    fun excludeNode() { // Eliminar um nó
         tree.items.forEach {
             setup.excludeNode(it)
         }
